@@ -24,9 +24,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class FirstRoute extends StatelessWidget {
+class FirstRoute extends StatefulWidget {
   const FirstRoute({super.key});
 
+  @override
+  State<FirstRoute> createState() => _FirstRouteState();
+}
+
+class _FirstRouteState extends State<FirstRoute> {
+
+  TextEditingController _EmailorUsername = new TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,6 +87,7 @@ class FirstRoute extends StatelessWidget {
                       children: [
                         const SizedBox(height: 50.0,),
                         TextFormField(
+                          controller: _EmailorUsername,
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
@@ -102,7 +111,6 @@ class FirstRoute extends StatelessWidget {
                               ),
                             ),
                           ),
-                          obscureText: true,
                         ),
                         const SizedBox(
                           height: 30.0,
@@ -152,11 +160,7 @@ class FirstRoute extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SecondRoute()),
-                            );
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SecondRoute(EmailorUsername: _EmailorUsername.text)));
                           },
                           child: Container(
                             height: 40,
@@ -216,7 +220,10 @@ class FirstRoute extends StatelessWidget {
 }
 
 class SecondRoute extends StatelessWidget {
-  const SecondRoute({super.key});
+
+  String EmailorUsername;
+
+  SecondRoute({required this.EmailorUsername});
 
   @override
   Widget build(BuildContext context) {
@@ -241,7 +248,7 @@ class SecondRoute extends StatelessWidget {
                   left: 22,
                 ),
                 child: Text(
-                  "Hello\nWelcome!",
+                  "Hello\nWelcome!\n${EmailorUsername}",
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
